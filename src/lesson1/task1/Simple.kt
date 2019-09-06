@@ -69,8 +69,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int =
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double
-{
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
     val bufferCount = vershoks + 48 * sagenes + 16 * arshins
     return bufferCount * 0.04445
 }
@@ -90,8 +89,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double =
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double
-{
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
     val length = sqr(x1 - x2) + sqr(y1 - y2)
     return sqrt(length)
 }
@@ -131,8 +129,7 @@ fun accountInThreeYears(initial: Int, percent: Int): Double =
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int
-{
+fun numberRevert(number: Int): Int {
     val str: String = number.toString()
     return str.reversed().toInt()
 }
