@@ -102,7 +102,8 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = (number % 1000) / 100
+fun thirdDigit(number: Int): Int =
+    (number % 1000) / 100
 
 /**
  * Простая
@@ -121,7 +122,8 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = (1 + (percent / 100.0)).pow(3) * initial
+fun accountInThreeYears(initial: Int, percent: Int): Double =
+    (1 + (percent / 100.0)).pow(3) * initial
 
 /**
  * Простая
