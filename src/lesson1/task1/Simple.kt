@@ -135,6 +135,7 @@ fun numberRevert(number: Int): Int {
 }
 
 /*
+
 fun numberRevert(number: Int): Int = (number % 10) * 100 + ((number % 100) / 10) * 10 + number / 100
-// это самый простой способ решения
+
  */
