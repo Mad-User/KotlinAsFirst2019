@@ -128,23 +128,19 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (!(b < c && d < a)) {
-        if (a <= c || b <= d) {
-
-            return 1
-        }
-        if (c <= a || d <= b) {
-
-            return 2
-        }
-        if (a <= c || c <= b) {
-
-            return 3
-        }
-        if (a <= d || d <= b) {
-
-            return 4
-        }
+    if (!((d < a) || (b < c))) {                         /* if-1 */
+        if (a == d) return 0                             /* if-2 */
+        if (b == c) return 0                             /* if-3 */
+        if ((a <= c) && (d <= b)) return d - c           /* if-4 */
+        if ((c <= a) && (b <= d)) return b - a           /* if-5 */
+        if ((a <= c) && (c <= b)) return b - c           /* if-6 */
+        if ((c <= a) && (a <= d)) return d - a           /* if-7 */
     }
     return -1
+/*
+ * if-1 - пределяет наличие пересечения, если он не выполняется, ф-я сразу возвращает -1
+ * if-2 && if-3 - возврат 0 при совпадении начала одного отрезка с концом другого
+ * if-4 - if-5 - возврат длины отрезка, если он находится в другом отрезке (--A--c--d--B--)
+ * if-6 - if-7 - возврат длины пересечения, если одна из точек отрезка принадлежит другому, а вторая нет
+ */
 }

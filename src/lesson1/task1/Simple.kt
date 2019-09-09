@@ -133,9 +133,3 @@ fun numberRevert(number: Int): Int {
     val str: String = number.toString()
     return str.reversed().toInt()
 }
-
-/*
-
-fun numberRevert(number: Int): Int = (number % 10) * 100 + ((number % 100) / 10) * 10 + number / 100
-
- */
