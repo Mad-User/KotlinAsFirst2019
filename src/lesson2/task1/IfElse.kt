@@ -100,11 +100,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if ((kingX != rookX1) && (kingX != rookY1) && (kingY != rookX2) && (kingY != rookY2)) return 0
-    if (((kingX == rookX1) || (kingX == rookY1)) && ((kingY != rookX2) && (kingY != rookY2))) return 1
-    if (((kingX != rookX1) || (kingX != rookY1)) && ((kingY == rookX2) && (kingY == rookY2))) return 2
-    if (((kingX == rookX1) || (kingX == rookY1)) && ((kingY == rookX2) && (kingY == rookY2))) return 3
-    return 100500
+    if (!((kingX != rookX1) && (kingY != rookY1) && (kingX != rookX2) && (kingY != rookY2))) {
+        if (((kingX == rookX1) || (kingY == rookY1)) && (kingX != rookX2) && (kingY != rookY2)) return 1
+        if ((kingX != rookX1) && (kingY != rookY1) && ((kingX != rookX2) || (kingY != rookY2))) return 2
+        if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) return 3
+    }
+    return 0
 }
 
 /**
@@ -152,7 +153,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     }
     return -1
 /*
- * if-1 - пределяет наличие пересечения, если он не выполняется, ф-я сразу возвращает -1
+ * if-1 - определяет наличие пересечения, если он не выполняется, ф-я сразу возвращает -1
  * if-2 && if-3 - возврат 0 при совпадении начала одного отрезка с концом другого
  * if-4 - if-5 - возврат длины отрезка, если он находится в другом отрезке (--A--c--d--B--)
  * if-6 - if-7 - возврат длины пересечения, если одна из точек отрезка принадлежит другому, а вторая нет
