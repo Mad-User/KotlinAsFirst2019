@@ -77,13 +77,14 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val lengthHalf: Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-    if (lengthHalf < (t1 * v1)) return lengthHalf / v1
-    if (lengthHalf == (t1 * v1)) return t1
-    if (((t1 * v1) < lengthHalf) && (lengthHalf < (t2 * v2))) return (lengthHalf - (t1 * v1)) / v2
-    if (lengthHalf == (t2 * v2)) return t2
-    if (lengthHalf > (t2 * v2)) return (lengthHalf - ((t1 * v1) + (t2 * v2))) / v3
-    return 100500.0
+    var lengthHalf: Double = ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2.0
+    if (lengthHalf > (t1 * v1)) {
+        lengthHalf -= (t1 * v1)
+    } else return lengthHalf / v1
+    if ((lengthHalf > (t2 * v2))) {
+        lengthHalf -= (t2 * v2)
+    } else return t1 + lengthHalf / v2
+    return t1 + t2 + lengthHalf / v3
 }
 
 /**
