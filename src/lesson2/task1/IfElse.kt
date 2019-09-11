@@ -164,13 +164,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val min = minOf(a, b, c)
     val mid = (a + b + c) - (min + max)
     if (max < min + mid) {
-        val isTriangleT = max * max > (min * min + mid * mid)
-        val isTriangleP = max * max == (min * min + mid * mid)
-        val isTriangleO = max * max < (min * min + mid * mid)
+        val isTriangleObtuse = max * max > (min * min + mid * mid)
+        val isTriangleRight = max * max == (min * min + mid * mid)
+        val isTriangleAcute = max * max < (min * min + mid * mid)
         return when {
-            isTriangleO -> 0
-            isTriangleP -> 1
-            isTriangleT -> 2
+            isTriangleAcute -> 0
+            isTriangleRight -> 1
+            isTriangleObtuse -> 2
             else -> -1
         }
     }
