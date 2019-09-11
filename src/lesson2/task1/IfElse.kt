@@ -65,10 +65,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    val lastSymbol = age % 10
     if (age in 5..20) return "$age лет"
     if (age in 105..120) return "$age лет"
-    return when (lastSymbol) {
+    return when (age % 10) {
         0 -> "$age лет"
         1 -> "$age год"
         in 2..4 -> "$age года"
@@ -162,12 +161,12 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val max = maxOf(a, b, c)
-    var mid = 0.0
+    val mid = when {
+        (b < a && a < c) || (c < a && a < b) -> a
+        (a < b && b < c) || (c < b && b < a) -> b
+        else -> c
+    }
     val min = minOf(a, b, c)
-    if (min <= a && a <= max) mid = a
-    if (min <= b && b <= max) mid = b
-    if (min <= c && c <= max) mid = c
-    println("$min $mid $max")
     if (max < min + mid) {
         val isTriangleT = max * max > (min * min + mid * mid)
         val isTriangleP = max * max == (min * min + mid * mid)
