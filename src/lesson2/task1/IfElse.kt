@@ -162,8 +162,8 @@ fun rookOrBishopThreatens(
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val max = maxOf(a, b, c)
     val mid = when {
-        (b < a && a < c) || (c < a && a < b) -> a
-        (a < b && b < c) || (c < b && b < a) -> b
+        (b < a && a <= c) || (c < a && a <= b) -> a
+        (a < b && b <= c) || (c < b && b <= a) -> b
         else -> c
     }
     val min = minOf(a, b, c)
