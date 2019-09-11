@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -63,7 +64,18 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    val lastSymbol = age % 10
+    if (age in 5..20) return "$age лет"
+    if (age in 105..120) return "$age лет"
+    return when (lastSymbol) {
+        0 -> "$age лет"
+        1 -> "$age год"
+        in 2..4 -> "$age года"
+        in 5..9 -> "$age лет"
+        else -> "$age"
+    }
+}
 
 /**
  * Простая
@@ -77,12 +89,14 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    var lengthHalf: Double = ((t1 * v1) + (t2 * v2) + (t3 * v3)) / 2.0
-    if (lengthHalf > (t1 * v1)) {
-        lengthHalf -= (t1 * v1)
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    var lengthHalf = (s1 + s2 + (t3 * v3)) / 2.0
+    if (lengthHalf > s1) {
+        lengthHalf -= s1
     } else return lengthHalf / v1
-    if ((lengthHalf > (t2 * v2))) {
-        lengthHalf -= (t2 * v2)
+    if ((lengthHalf > s2)) {
+        lengthHalf -= s2
     } else return t1 + lengthHalf / v2
     return t1 + t2 + lengthHalf / v3
 }
@@ -101,12 +115,15 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (!((kingX != rookX1) && (kingY != rookY1) && (kingX != rookX2) && (kingY != rookY2))) {
-        if (((kingX == rookX1) || (kingY == rookY1)) && (kingX != rookX2) && (kingY != rookY2)) return 1
-        if ((kingX != rookX1) && (kingY != rookY1) && ((kingX != rookX2) || (kingY != rookY2))) return 2
-        if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) return 3
+    val isThrByRook1 = (kingX == rookX1) || (kingY == rookY1)
+    val isThrByRook2 = (kingX == rookX2) || (kingY == rookY2)
+    return when {
+        !isThrByRook1 && !isThrByRook2 -> 0
+        isThrByRook1 && !isThrByRook2 -> 1
+        !isThrByRook1 && isThrByRook2 -> 2
+        isThrByRook1 && isThrByRook2 -> 3
+        else -> 0
     }
-    return 0
 }
 
 /**
@@ -123,7 +140,17 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    val isThrRook = (kingX == rookX) || (kingY == rookY)
+    val isThrBishop = (kingY - bishopY) == (kingX - bishopX) || ((kingY - bishopY) == -(kingX - bishopX))
+    return when {
+        !isThrRook && !isThrBishop -> 0
+        isThrRook && !isThrBishop -> 1
+        !isThrRook && isThrBishop -> 2
+        isThrRook && isThrBishop -> 3
+        else -> 0
+    }
+}
 
 /**
  * Простая
@@ -133,7 +160,27 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val max = maxOf(a, b, c)
+    var mid = 0.0
+    val min = minOf(a, b, c)
+    if (min <= a && a <= max) mid = a
+    if (min <= b && b <= max) mid = b
+    if (min <= c && c <= max) mid = c
+    println("$min $mid $max")
+    if (max < min + mid) {
+        val isTriangleT = max * max > (min * min + mid * mid)
+        val isTriangleP = max * max == (min * min + mid * mid)
+        val isTriangleO = max * max < (min * min + mid * mid)
+        return when {
+            isTriangleO -> 0
+            isTriangleP -> 1
+            isTriangleT -> 2
+            else -> -1
+        }
+    }
+    return -1
+}
 
 /**
  * Средняя
@@ -144,19 +191,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (!((d < a) || (b < c))) {                         /* if-1 */
-        if (a == d) return 0                             /* if-2 */
-        if (b == c) return 0                             /* if-3 */
-        if ((a <= c) && (d <= b)) return d - c           /* if-4 */
-        if ((c <= a) && (b <= d)) return b - a           /* if-5 */
-        if ((a <= c) && (c <= b)) return b - c           /* if-6 */
-        if ((c <= a) && (a <= d)) return d - a           /* if-7 */
+    return when {
+        a == d -> 0
+        b == c -> 0
+        (a <= c) && (d <= b) -> d - c
+        (c <= a) && (b <= d) -> b - a
+        (a <= c) && (c <= b) -> b - c
+        (c <= a) && (a <= d) -> d - a
+        else -> -1
     }
-    return -1
-/*
- * if-1 - определяет наличие пересечения, если он не выполняется, ф-я сразу возвращает -1
- * if-2 && if-3 - возврат 0 при совпадении начала одного отрезка с концом другого
- * if-4 - if-5 - возврат длины отрезка, если он находится в другом отрезке (--A--c--d--B--)
- * if-6 - if-7 - возврат длины пересечения, если одна из точек отрезка принадлежит другому, а вторая нет
- */
 }
