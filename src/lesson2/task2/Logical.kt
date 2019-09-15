@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import lesson1.task1.trackLength
 
 /**
  * Пример
@@ -48,7 +49,13 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+): Boolean {
+
+    val d = trackLength(x1, y1, x2, y2)
+
+    if (d <= r2 - r1) return true
+    return false
+}
 
 /**
  * Средняя

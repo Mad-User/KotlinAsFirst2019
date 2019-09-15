@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import lesson7.task1.countSubstrings
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -84,8 +83,10 @@ fun digitNumber(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
+
     var a = m
     var b = n
+
     while (a != 0 && b != 0) {
         if (a > b) a %= b
         else b %= a
@@ -100,11 +101,14 @@ fun lcm(m: Int, n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
+
     if (n in 1..2) return 1
+
     var i = 3
     var n2 = 1
     var n1 = 1
     var interim: Int
+
     while (i < n) {
         interim = n1 + n2
         n2 = n1
@@ -240,9 +244,11 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
+
     var i = 1
     var target: Int
     var length = 0
+
     while (length < n) {
         target = i
         target *= target
@@ -252,8 +258,10 @@ fun squareSequenceDigit(n: Int): Int {
         }
         i++
     }
+
     target = i - 1
     target *= target
+
     return ((target / 10.0.pow(length - n)) % 10).toInt()
 }
 
@@ -267,9 +275,11 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
+
     var i = 1
     var target: Int
     var length = 0
+
     while (length < n) {
         target = fib(i)
         while (target / 1 != 0) {
@@ -278,6 +288,8 @@ fun fibSequenceDigit(n: Int): Int {
         }
         i++
     }
+
     target = fib(i - 1)
+
     return ((target / 10.0.pow(length - n)) % 10).toInt()
 }
