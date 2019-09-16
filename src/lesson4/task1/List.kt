@@ -301,7 +301,7 @@ fun russian(n: Int): String {
             4 -> "четыреста $str"
             5 -> "пятьсот $str"
             6 -> "шестьсот $str"
-            7 -> "емьсот $str"
+            7 -> "семьсот $str"
             8 -> "восемьсот $str"
             9 -> "девятьсот $str"
             else -> str
@@ -347,7 +347,7 @@ fun russian(n: Int): String {
                 3 -> "тридцать $str"
                 4 -> "сорок $str"
                 5 -> "пятьдесят $str"
-                6 -> "шесдесят $str"
+                6 -> "шестьдесят $str"
                 7 -> "семьдесят $str"
                 8 -> "восемьдесят $str"
                 9 -> "девяносто $str"
@@ -369,8 +369,6 @@ fun russian(n: Int): String {
             else -> str
         }
     }
-
-    println("in: $n, out: $str")
 
     return str
 }
