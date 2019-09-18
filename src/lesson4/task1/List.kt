@@ -320,6 +320,11 @@ fun russian(n: Int): String {
     num /= 1000
 
     if (num != 0) {
+
+        list.add(count, ";")
+
+        count++
+
         if (num / 10 % 10 == 1) {
             when (num % 10) {
                 0 -> list.add(count, "десять")
@@ -383,13 +388,13 @@ fun russian(n: Int): String {
     }
 
     for (i in 0 until list.size) {
-        if (i == 3) {
-            str = if (n / 10000 % 10 == 1) "тысяч $str"
+        if (list[i] == ";") {
+            list[i] = if (n / 10000 % 10 == 1) "тысяч"
             else when (n / 1000 % 10) {
-                1 -> "тысяча $str"
-                in 2..4 -> "тысячи $str"
-                0, in 5..9 -> "тысяч $str"
-                else -> "тысяч $str"
+                1 -> "тысяча"
+                in 2..4 -> "тысячи"
+                0, in 5..9 -> "тысяч"
+                else -> "тысяч"
             }
         }
 
