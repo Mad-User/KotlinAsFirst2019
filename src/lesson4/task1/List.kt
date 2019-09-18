@@ -253,50 +253,30 @@ fun russian(n: Int): String {
     val list = mutableListOf<String>()
 
     val unitsDozensList = listOf(
-        "десять",
-        "одиннадцать",
-        "двенадцать",
-        "тринадцать",
-        "четырнадцать",
-        "пятнадцать",
-        "шестнадцать",
-        "семнадцать",
-        "восемнадцать",
-        "девятнадцать"
+        "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+        "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
     )
-    val unitsForthousandsList = listOf("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val unitsForThousandsList = listOf("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val unitsList = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val dozensList = listOf(
-        "",
-        "",
-        "двадцать",
-        "тридцать",
-        "сорок",
-        "пятьдесят",
-        "шестьдесят",
-        "семьдесят",
-        "восемьдесят",
-        "девяносто"
+        "", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят",
+        "восемьдесят", "девяносто"
     )
     val hundredsList =
         listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
 
     if (num / 10 % 10 == 1) {
         list.add(unitsDozensList[num % 10])
-
         num /= 100
     } else {
         list.add(unitsList[num % 10])
-
         num /= 10
 
         list.add(dozensList[num % 10])
-
         num /= 10
     }
 
     list.add(hundredsList[num % 10])
-
     num /= 10
 
     if (num != 0) {
@@ -304,7 +284,6 @@ fun russian(n: Int): String {
             list.add("тысяч")
 
             list.add(unitsDozensList[num % 10])
-
             num /= 100
         } else {
             list.add(
@@ -316,18 +295,16 @@ fun russian(n: Int): String {
                 }
             )
 
-            list.add(unitsForthousandsList[num % 10])
-
+            list.add(unitsForThousandsList[num % 10])
             num /= 10
 
             list.add(dozensList[num % 10])
-
             num /= 10
         }
 
         list.add(hundredsList[num % 10])
 
-//        num /= 10
+//        num /= 10  // for extend
     }
 
     for (i in 0 until list.size) if (list[i] != "") str = "${list[i]} $str"
