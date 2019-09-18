@@ -65,10 +65,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    val lastSymbol = age % 10
+
     if (age in 5..20) return "$age лет"
     if (age in 105..120) return "$age лет"
-    return when (lastSymbol) {
+
+    return when (age % 10) {
         0 -> "$age лет"
         1 -> "$age год"
         in 2..4 -> "$age года"
@@ -89,15 +90,19 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
+
     val s1 = t1 * v1
     val s2 = t2 * v2
     var lengthHalf = (s1 + s2 + (t3 * v3)) / 2.0
+
     if (lengthHalf > s1) {
         lengthHalf -= s1
     } else return lengthHalf / v1
+
     if ((lengthHalf > s2)) {
         lengthHalf -= s2
     } else return t1 + lengthHalf / v2
+
     return t1 + t2 + lengthHalf / v3
 }
 
@@ -115,8 +120,10 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
+
     val isThrByRook1 = (kingX == rookX1) || (kingY == rookY1)
     val isThrByRook2 = (kingX == rookX2) || (kingY == rookY2)
+
     return when {
         !isThrByRook1 && !isThrByRook2 -> 0
         isThrByRook1 && !isThrByRook2 -> 1
@@ -141,8 +148,10 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
+
     val isThrRook = (kingX == rookX) || (kingY == rookY)
     val isThrBishop = (kingY - bishopY) == (kingX - bishopX) || ((kingY - bishopY) == -(kingX - bishopX))
+
     return when {
         !isThrRook && !isThrBishop -> 0
         isThrRook && !isThrBishop -> 1
@@ -161,24 +170,23 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
+
     val max = maxOf(a, b, c)
-    var mid = 0.0
     val min = minOf(a, b, c)
-    if (min <= a && a <= max) mid = a
-    if (min <= b && b <= max) mid = b
-    if (min <= c && c <= max) mid = c
-    println("$min $mid $max")
+    val mid = (a + b + c) - (min + max)
+
     if (max < min + mid) {
-        val isTriangleT = max * max > (min * min + mid * mid)
-        val isTriangleP = max * max == (min * min + mid * mid)
-        val isTriangleO = max * max < (min * min + mid * mid)
+        val isTriangleObtuse = max * max > (min * min + mid * mid)
+        val isTriangleRight = max * max == (min * min + mid * mid)
+        val isTriangleAcute = max * max < (min * min + mid * mid)
         return when {
-            isTriangleO -> 0
-            isTriangleP -> 1
-            isTriangleT -> 2
+            isTriangleAcute -> 0
+            isTriangleRight -> 1
+            isTriangleObtuse -> 2
             else -> -1
         }
     }
+
     return -1
 }
 

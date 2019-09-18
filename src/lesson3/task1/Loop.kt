@@ -2,6 +2,8 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -12,7 +14,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -67,15 +69,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
-
-/**
- * Простая
- *
- * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
- * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
- */
-fun fib(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    return when (n) {
+        in -9..9 -> 1
+        else -> 1 + digitNumber(n / 10)
+    }
+}
 
 /**
  * Простая
@@ -83,7 +82,41 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+
+    var a = m
+    var b = n
+
+    while (a != 0 && b != 0) {
+        if (a > b) a %= b
+        else b %= a
+    }
+    return (m * n) / (a + b)
+}
+
+/**
+ * Простая
+ *
+ * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
+ * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
+ */
+fun fib(n: Int): Int {
+
+    if (n in 1..2) return 1
+
+    var i = 3
+    var n2 = 1
+    var n1 = 1
+    var interim: Int
+
+    while (i < n) {
+        interim = n1 + n2
+        n2 = n1
+        n1 = interim
+        i++
+    }
+    return n1 + n2
+}
 
 /**
  * Простая
@@ -91,6 +124,11 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int = TODO()
+//{
+//    var i = 2
+//    while (n % i != 0) i++
+//    return i
+//} Оптимизировать!!!
 
 /**
  * Простая
@@ -98,6 +136,11 @@ fun minDivisor(n: Int): Int = TODO()
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int = TODO()
+//{
+//    var i = n - 1
+//    while (n % i != 0) i--
+//    return i
+//} Оптимизировать!!!
 
 /**
  * Простая
@@ -115,7 +158,11 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    for (i in m..n)
+        if (sqrt(i.toDouble()) % 1 == 0.0) return true
+    return false
+}
 
 /**
  * Средняя
@@ -196,7 +243,27 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+
+    var i = 1
+    var target: Int
+    var length = 0
+
+    while (length < n) {
+        target = i
+        target *= target
+        while (target / 1 != 0) {
+            length++
+            target /= 10
+        }
+        i++
+    }
+
+    target = i - 1
+    target *= target
+
+    return ((target / 10.0.pow(length - n)) % 10).toInt()
+}
 
 /**
  * Сложная
@@ -207,4 +274,22 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+
+    var i = 1
+    var target: Int
+    var length = 0
+
+    while (length < n) {
+        target = fib(i)
+        while (target / 1 != 0) {
+            length++
+            target /= 10
+        }
+        i++
+    }
+
+    target = fib(i - 1)
+
+    return ((target / 10.0.pow(length - n)) % 10).toInt()
+}
