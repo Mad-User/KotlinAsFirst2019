@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import kotlin.math.floor
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -69,11 +70,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int {
-    return when (n) {
-        in -9..9 -> 1
-        else -> 1 + digitNumber(n / 10)
-    }
+fun digitNumber(n: Int): Int = when (n) {
+    in -9..9 -> 1
+    else -> 1 + digitNumber(n / 10)
 }
 
 /**
@@ -251,11 +250,9 @@ fun squareSequenceDigit(n: Int): Int {
 
     while (length < n) {
         target = i
-        target *= target
-        while (target / 1 != 0) {
-            length++
-            target /= 10
-        }
+
+        length += digitNumber(target * target)
+
         i++
     }
 
@@ -282,10 +279,9 @@ fun fibSequenceDigit(n: Int): Int {
 
     while (length < n) {
         target = fib(i)
-        while (target / 1 != 0) {
-            length++
-            target /= 10
-        }
+
+        length += digitNumber(target)
+
         i++
     }
 

@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -93,6 +94,7 @@ fun timeForHalfWay(
 
     val s1 = t1 * v1
     val s2 = t2 * v2
+
     var lengthHalf = (s1 + s2 + (t3 * v3)) / 2.0
 
     if (lengthHalf > s1) {
@@ -150,7 +152,7 @@ fun rookOrBishopThreatens(
 ): Int {
 
     val isThrRook = (kingX == rookX) || (kingY == rookY)
-    val isThrBishop = (kingY - bishopY) == (kingX - bishopX) || ((kingY - bishopY) == -(kingX - bishopX))
+    val isThrBishop = abs(kingY - bishopY) == abs(kingX - bishopX)
 
     return when {
         !isThrRook && !isThrBishop -> 0

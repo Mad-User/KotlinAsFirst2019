@@ -247,159 +247,90 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
 
+    var num = n
     var str = ""
+
     val list = mutableListOf<String>()
 
-    var num = n
-    var count = 0
+    val unitsDozensList = listOf(
+        "десять",
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    val unitsForthousandsList = listOf("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val unitsList = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val dozensList = listOf(
+        "",
+        "",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    val hundredsList =
+        listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
 
     if (num / 10 % 10 == 1) {
-        when (num % 10) {
-            0 -> list.add(count, "десять")
-            1 -> list.add(count, "одиннадцать")
-            2 -> list.add(count, "двенадцать")
-            3 -> list.add(count, "тринадцать")
-            4 -> list.add(count, "четырнадцать")
-            5 -> list.add(count, "пятнадцать")
-            6 -> list.add(count, "шестнадцать")
-            7 -> list.add(count, "семнадцать")
-            8 -> list.add(count, "восемнадцать")
-            9 -> list.add(count, "девятнадцать")
-            else -> list.add(count, "")
-        }
+        list.add(unitsDozensList[num % 10])
 
-        count++
+        num /= 100
     } else {
-        when (num % 10) {
-            1 -> list.add(count, "один")
-            2 -> list.add(count, "два")
-            3 -> list.add(count, "три")
-            4 -> list.add(count, "четыре")
-            5 -> list.add(count, "пять")
-            6 -> list.add(count, "шесть")
-            7 -> list.add(count, "семь")
-            8 -> list.add(count, "восемь")
-            9 -> list.add(count, "девять")
-            else -> list.add(count, "")
-        }
+        list.add(unitsList[num % 10])
 
-        count++
+        num /= 10
 
-        when (num / 10 % 10) {
-            0, 1 -> list.add(count, "")
-            2 -> list.add(count, "двадцать")
-            3 -> list.add(count, "тридцать")
-            4 -> list.add(count, "сорок")
-            5 -> list.add(count, "пятьдесят")
-            6 -> list.add(count, "шестьдесят")
-            7 -> list.add(count, "семьдесят")
-            8 -> list.add(count, "восемьдесят")
-            9 -> list.add(count, "девяносто")
-            else -> list.add(count, "")
-        }
+        list.add(dozensList[num % 10])
 
-        count++
+        num /= 10
     }
 
-    when (num / 100 % 10) {
-        0 -> list.add(count, "")
-        1 -> list.add(count, "сто")
-        2 -> list.add(count, "двести")
-        3 -> list.add(count, "триста")
-        4 -> list.add(count, "четыреста")
-        5 -> list.add(count, "пятьсот")
-        6 -> list.add(count, "шестьсот")
-        7 -> list.add(count, "семьсот")
-        8 -> list.add(count, "восемьсот")
-        9 -> list.add(count, "девятьсот")
-        else -> list.add(count, "")
-    }
+    list.add(hundredsList[num % 10])
 
-    count++
-
-    num /= 1000
+    num /= 10
 
     if (num != 0) {
-
-        list.add(count, ";")
-
-        count++
-
         if (num / 10 % 10 == 1) {
-            when (num % 10) {
-                0 -> list.add(count, "десять")
-                1 -> list.add(count, "одинадцать")
-                2 -> list.add(count, "двенадцать")
-                3 -> list.add(count, "тринадцать")
-                4 -> list.add(count, "четырнадцать")
-                5 -> list.add(count, "пятнадцать")
-                6 -> list.add(count, "шестнадцать")
-                7 -> list.add(count, "семнадцать")
-                8 -> list.add(count, "восемнадцать")
-                9 -> list.add(count, "девятнадцать")
-                else -> list.add(count, "")
-            }
+            list.add("тысяч")
 
-            count++
+            list.add(unitsDozensList[num % 10])
+
+            num /= 100
         } else {
-            when (num % 10) {
-                1 -> list.add(count, "одна")
-                2 -> list.add(count, "две")
-                3 -> list.add(count, "три")
-                4 -> list.add(count, "четыре")
-                5 -> list.add(count, "пять")
-                6 -> list.add(count, "шесть")
-                7 -> list.add(count, "семь")
-                8 -> list.add(count, "восемь")
-                9 -> list.add(count, "девять")
-                else -> list.add(count, "")
-            }
+            list.add(
+                when (num % 10) {
+                    1 -> "тысяча"
+                    in 2..4 -> "тысячи"
+                    0, in 5..9 -> "тысяч"
+                    else -> "тысяч"
+                }
+            )
 
-            count++
+            list.add(unitsForthousandsList[num % 10])
 
-            when (num / 10 % 10) {
-                2 -> list.add(count, "двадцать")
-                3 -> list.add(count, "тридцать")
-                4 -> list.add(count, "сорок")
-                5 -> list.add(count, "пятьдесят")
-                6 -> list.add(count, "шестьдесят")
-                7 -> list.add(count, "семьдесят")
-                8 -> list.add(count, "восемьдесят")
-                9 -> list.add(count, "девяносто")
-                else -> list.add(count, "")
-            }
+            num /= 10
 
-            count++
+            list.add(dozensList[num % 10])
+
+            num /= 10
         }
 
-        when (num / 100 % 10) {
-            0 -> list.add(count, "")
-            1 -> list.add(count, "сто")
-            2 -> list.add(count, "двести")
-            3 -> list.add(count, "триста")
-            4 -> list.add(count, "четыреста")
-            5 -> list.add(count, "пятьсот")
-            6 -> list.add(count, "шестьсот")
-            7 -> list.add(count, "семьсот")
-            8 -> list.add(count, "восемьсот")
-            9 -> list.add(count, "девятьсот")
-            else -> list.add(count, "")
-        }
+        list.add(hundredsList[num % 10])
+
+//        num /= 10
     }
 
-    for (i in 0 until list.size) {
-        if (list[i] == ";") {
-            list[i] = if (n / 10000 % 10 == 1) "тысяч"
-            else when (n / 1000 % 10) {
-                1 -> "тысяча"
-                in 2..4 -> "тысячи"
-                0, in 5..9 -> "тысяч"
-                else -> "тысяч"
-            }
-        }
-
-        if (list[i] != "") str = "${list[i]} $str"
-    }
+    for (i in 0 until list.size) if (list[i] != "") str = "${list[i]} $str"
 
     return str.trim()
 }
