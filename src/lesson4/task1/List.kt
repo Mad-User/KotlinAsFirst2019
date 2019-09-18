@@ -253,11 +253,10 @@ fun russian(n: Int): String {
     var num = n
     var count = 0
 
-
     if (num / 10 % 10 == 1) {
         when (num % 10) {
             0 -> list.add(count, "десять")
-            1 -> list.add(count, "одинадцать")
+            1 -> list.add(count, "одиннадцать")
             2 -> list.add(count, "двенадцать")
             3 -> list.add(count, "тринадцать")
             4 -> list.add(count, "четырнадцать")
@@ -300,9 +299,9 @@ fun russian(n: Int): String {
         }
 
         count++
-
     }
-    when (num / 100) {
+
+    when (num / 100 % 10) {
         0 -> list.add(count, "")
         1 -> list.add(count, "сто")
         2 -> list.add(count, "двести")
@@ -350,26 +349,25 @@ fun russian(n: Int): String {
                 9 -> list.add(count, "девять")
                 else -> list.add(count, "")
             }
+
+            count++
+
+            when (num / 10 % 10) {
+                2 -> list.add(count, "двадцать")
+                3 -> list.add(count, "тридцать")
+                4 -> list.add(count, "сорок")
+                5 -> list.add(count, "пятьдесят")
+                6 -> list.add(count, "шестьдесят")
+                7 -> list.add(count, "семьдесят")
+                8 -> list.add(count, "восемьдесят")
+                9 -> list.add(count, "девяносто")
+                else -> list.add(count, "")
+            }
+
+            count++
         }
 
-        count++
-
-        when (num / 10 % 10) {
-            0, 1 -> list.add(count, "")
-            2 -> list.add(count, "двадцать")
-            3 -> list.add(count, "тридцать")
-            4 -> list.add(count, "сорок")
-            5 -> list.add(count, "пятьдесят")
-            6 -> list.add(count, "шестьдесят")
-            7 -> list.add(count, "семьдесят")
-            8 -> list.add(count, "восемьдесят")
-            9 -> list.add(count, "девяносто")
-            else -> list.add(count, "")
-        }
-
-        count++
-
-        when (num / 100) {
+        when (num / 100 % 10) {
             0 -> list.add(count, "")
             1 -> list.add(count, "сто")
             2 -> list.add(count, "двести")
@@ -391,10 +389,11 @@ fun russian(n: Int): String {
                 1 -> "тысяча $str"
                 in 2..4 -> "тысячи $str"
                 0, in 5..9 -> "тысяч $str"
-                else -> str
+                else -> "тысяч $str"
             }
-            if (list[i] != "") str = "${list[i]} $str"
         }
+
+        if (list[i] != "") str = "${list[i]} $str"
     }
 
     return str.trim()
