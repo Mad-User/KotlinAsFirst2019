@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import kotlin.math.floor
+
 /**
  * Пример
  *
@@ -208,4 +210,62 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+
+    val allCommands = listOf('>', '<', '+', '-', '[', ']', ' ')  /* список всех доступных команд */
+
+    // возможные ошибки
+    val stateError = IllegalStateException()                    /* выход за границу конвейера */
+    val argumentError = IllegalArgumentException()              /* наличие неверных символов */
+
+    val conveyor = Array(cells) { 0 }                           /* создание и инициализация "конвейера" */
+
+    var detectorPosition = floor(cells / 2.0).toInt()        /* определение позиции датчика */
+
+    var commandNumber = 0                                       /* номер выполняемой команды */
+    var operationCount = 0                                      /* количество выполненных операций */
+
+    // проверка наличия неверных символов
+    for (element in commands) if (!allCommands.contains(element)) throw argumentError
+
+    // проверка на наличие непарных скобок
+    var rightBracket = 0
+    var leftBracket = 0
+
+    for (element in commands) {
+        rightBracket += commands.count { it == allCommands[4] }  /* сумма '[' */
+        leftBracket += commands.count { it == allCommands[5] }   /* сумма ']' */
+    }
+    if (rightBracket != leftBracket) throw argumentError
+
+
+    while (operationCount < limit && commandNumber < commands.length) {
+
+        when (commands[commandNumber]) {
+            allCommands[0] ->
+                if (detectorPosition < conveyor.lastIndex) detectorPosition++
+                else throw stateError
+            allCommands[1] ->
+                if (detectorPosition > 0) detectorPosition--
+                else throw stateError
+            allCommands[2] -> conveyor[detectorPosition] += 1
+            allCommands[3] -> conveyor[detectorPosition] -= 1
+            allCommands[4] ->
+                if (conveyor[detectorPosition] == 0) while (commands[commandNumber] != allCommands[5]) commandNumber++
+            allCommands[5] ->
+                if (conveyor[detectorPosition] != 0) while (commands[commandNumber] != allCommands[4]) commandNumber--
+            else -> "no command"
+        }
+
+        println(commands)
+        for (i in conveyor) print("$i ")
+        println("\n  $commandNumber $operationCount ${commands[commandNumber]}")
+
+        commandNumber++
+        operationCount++
+    }
+
+    println("\n out")
+
+    return conveyor.toList()
+}
