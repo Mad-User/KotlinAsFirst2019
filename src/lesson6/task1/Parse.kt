@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+import java.text.FieldPosition
 import kotlin.math.floor
 
 /**
@@ -45,18 +46,21 @@ fun timeSecondsToStr(seconds: Int): String {
  * Пример: консольный ввод
  */
 fun main() {
-    println("Введите время в формате ЧЧ:ММ:СС")
-    val line = readLine()
-    if (line != null) {
-        val seconds = timeStrToSeconds(line)
-        if (seconds == -1) {
-            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        } else {
-            println("Прошло секунд с начала суток: $seconds")
-        }
-    } else {
-        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
-    }
+
+    computeDeviceCells(11, "<<<<< + >>>>>>>>>> --[<-] >+[>+] >++[--< <[<] >+[>+] >++]", 10000)
+
+//    println("Введите время в формате ЧЧ:ММ:СС")
+//    val line = readLine()
+//    if (line != null) {
+//        val seconds = timeStrToSeconds(line)
+//        if (seconds == -1) {
+//            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
+//        } else {
+//            println("Прошло секунд с начала суток: $seconds")
+//        }
+//    } else {
+//        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
+//    }
 }
 
 
@@ -210,45 +214,48 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+fun findNextPosition(commands: String, position: Int, movDirection: Short): Int {
 
-    // parser
-    val allCommands = listOf(">", "<", "+", "-", "[", "]", " ")  /* список всех доступных команд */
-    val parsedCommandList = MutableList(commands.length) { "" }  /* писок обработаггых команд */
+    val expectedElement = if (commands[position] == '[') ']' else '['
 
+    var position = position
     var bracketLevel = 0
-    var element: String
 
-    for (index in commands.indices) {
-        element = commands[index].toString()
+    while (commands[position] != expectedElement || bracketLevel != 0) {
 
-        require(allCommands.contains(element))
+        position += movDirection
 
-        if (allCommands.indexOf(element) in 0..3) parsedCommandList[index] = element
-
-        if (element == " ") parsedCommandList[index] = element
-
-        if (element == "[") {
-            bracketLevel++
-            parsedCommandList[index] = bracketLevel.toString()
-        }
-
-        if (element == "]") {
-            parsedCommandList[index] = bracketLevel.toString()
-            bracketLevel--
+        if (commands[position] != expectedElement) {
+            if (commands[position] == '[') bracketLevel++
+            if (commands[position] == ']') bracketLevel--
         }
     }
 
-    require(bracketLevel == 0)
-    // end
+    return position
+}
 
-    // for test
-    println(" start")
-    for (element in commands) print(element)
-    println()
-    for (element in parsedCommandList) print(element)
-    println("\n end\n")
-    // for test
+fun checkCommands(commands: String) {
+
+    var bracketCounter = 0
+    val allCommands = listOf(">", "<", "+", "-", "[", "]", " ")  /* список всех доступных команд */
+
+    // считаем пары скобок, если у какой-то скобки нет пары - счетчик не примет значение 0
+    for (element in commands) {
+
+        // бросить ошибку, если элемент не входит в список допустимых
+        require(allCommands.contains(element.toString()))
+
+        if (element == '[') bracketCounter++
+        if (element == ']') bracketCounter--
+    }
+
+    // бросить ошибку, если счетчик не равен 0
+    require(bracketCounter == 0)
+}
+
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+
+    checkCommands(commands) // проверка правильности ввода
 
     val conveyor = MutableList(cells) { 0 }
     var detectorPosition = floor(cells / 2.0).toInt()
@@ -256,49 +263,40 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var operationCounter = 0
     var commandNumber = 0
 
-    while (operationCounter < limit && commandNumber < parsedCommandList.size) {
+    while (operationCounter < limit && commandNumber < commands.length) {
 
-        element = parsedCommandList[commandNumber]
-        operationCounter++
+        when (commands[commandNumber]) {
 
-        when (element) {
-            " " -> ""
-
-            ">" ->
+            '>' ->
                 if (detectorPosition < conveyor.lastIndex)
                     detectorPosition++
                 else throw java.lang.IllegalStateException()
 
-            "<" ->
+            '<' ->
                 if (detectorPosition > 0)
                     detectorPosition--
                 else throw java.lang.IllegalStateException()
 
-            "+" -> conveyor[detectorPosition]++
+            '+' -> conveyor[detectorPosition]++
 
-            "-" -> conveyor[detectorPosition]--
+            '-' -> conveyor[detectorPosition]--
 
-            else -> {
-//                val level = element
-//                element = commands[commandNumber].toString()
-//
-//                // ошибка в нахождении правильной позиции перехода,
-//                // можно решить путем присвоения уникальных намеров парам скобок
-//                // или
-//                // срзданием массива Pair из намеров "[" и "]"
-//
-//                if (element == "[")
-//                    if (conveyor[detectorPosition] == 0)
-//
-//                        if (element == "]")
-//                            if (conveyor[detectorPosition] != 0) print(1)
+            '[' ->
+                if (conveyor[detectorPosition] == 0)
+                    commandNumber = findNextPosition(commands, commandNumber, 1)
 
-            }
+            ']' ->
+                if (conveyor[detectorPosition] != 0)
+                    commandNumber = findNextPosition(commands, commandNumber, -1)
+
+            else -> ""
         }
+
+        operationCounter++
         commandNumber++
     }
 
-    println()
+    println("commands: $commands\nconveyor: $conveyor\n")
 
     return conveyor
 }
