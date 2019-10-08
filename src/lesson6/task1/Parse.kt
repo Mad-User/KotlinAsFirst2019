@@ -212,60 +212,93 @@ fun fromRoman(roman: String): Int = TODO()
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
 
-    val allCommands = listOf('>', '<', '+', '-', '[', ']', ' ')  /* список всех доступных команд */
+    // parser
+    val allCommands = listOf(">", "<", "+", "-", "[", "]", " ")  /* список всех доступных команд */
+    val parsedCommandList = MutableList(commands.length) { "" }  /* писок обработаггых команд */
 
-    // возможные ошибки
-    val stateError = IllegalStateException()                    /* выход за границу конвейера */
-    val argumentError = IllegalArgumentException()              /* наличие неверных символов */
+    var bracketLevel = 0
+    var element: String
 
-    val conveyor = Array(cells) { 0 }                           /* создание и инициализация "конвейера" */
+    for (index in commands.indices) {
+        element = commands[index].toString()
 
-    var detectorPosition = floor(cells / 2.0).toInt()        /* определение позиции датчика */
+        require(allCommands.contains(element))
 
-    var commandNumber = 0                                       /* номер выполняемой команды */
-    var operationCount = 0                                      /* количество выполненных операций */
+        if (allCommands.indexOf(element) in 0..3) parsedCommandList[index] = element
 
-    // проверка наличия неверных символов
-    for (element in commands) if (!allCommands.contains(element)) throw argumentError
+        if (element == " ") parsedCommandList[index] = element
 
-    // проверка на наличие непарных скобок
-    var rightBracket = 0
-    var leftBracket = 0
-
-    for (element in commands) {
-        rightBracket += commands.count { it == allCommands[4] }  /* сумма '[' */
-        leftBracket += commands.count { it == allCommands[5] }   /* сумма ']' */
-    }
-    if (rightBracket != leftBracket) throw argumentError
-
-
-    while (operationCount < limit && commandNumber < commands.length) {
-
-        when (commands[commandNumber]) {
-            allCommands[0] ->
-                if (detectorPosition < conveyor.lastIndex) detectorPosition++
-                else throw stateError
-            allCommands[1] ->
-                if (detectorPosition > 0) detectorPosition--
-                else throw stateError
-            allCommands[2] -> conveyor[detectorPosition] += 1
-            allCommands[3] -> conveyor[detectorPosition] -= 1
-            allCommands[4] ->
-                if (conveyor[detectorPosition] == 0) while (commands[commandNumber] != allCommands[5]) commandNumber++
-            allCommands[5] ->
-                if (conveyor[detectorPosition] != 0) while (commands[commandNumber] != allCommands[4]) commandNumber--
-            else -> "no command"
+        if (element == "[") {
+            bracketLevel++
+            parsedCommandList[index] = bracketLevel.toString()
         }
 
-        println(commands)
-        for (i in conveyor) print("$i ")
-        println("\n  $commandNumber $operationCount ${commands[commandNumber]}")
-
-        commandNumber++
-        operationCount++
+        if (element == "]") {
+            parsedCommandList[index] = bracketLevel.toString()
+            bracketLevel--
+        }
     }
 
-    println("\n out")
+    require(bracketLevel == 0)
+    // end
 
-    return conveyor.toList()
+    // for test
+    println(" start")
+    for (element in commands) print(element)
+    println()
+    for (element in parsedCommandList) print(element)
+    println("\n end\n")
+    // for test
+
+    val conveyor = MutableList(cells) { 0 }
+    var detectorPosition = floor(cells / 2.0).toInt()
+
+    var operationCounter = 0
+    var commandNumber = 0
+
+    while (operationCounter < limit && commandNumber < parsedCommandList.size) {
+
+        element = parsedCommandList[commandNumber]
+        operationCounter++
+
+        when (element) {
+            " " -> ""
+
+            ">" ->
+                if (detectorPosition < conveyor.lastIndex)
+                    detectorPosition++
+                else throw java.lang.IllegalStateException()
+
+            "<" ->
+                if (detectorPosition > 0)
+                    detectorPosition--
+                else throw java.lang.IllegalStateException()
+
+            "+" -> conveyor[detectorPosition]++
+
+            "-" -> conveyor[detectorPosition]--
+
+            else -> {
+//                val level = element
+//                element = commands[commandNumber].toString()
+//
+//                // ошибка в нахождении правильной позиции перехода,
+//                // можно решить путем присвоения уникальных намеров парам скобок
+//                // или
+//                // срзданием массива Pair из намеров "[" и "]"
+//
+//                if (element == "[")
+//                    if (conveyor[detectorPosition] == 0)
+//
+//                        if (element == "]")
+//                            if (conveyor[detectorPosition] != 0) print(1)
+
+            }
+        }
+        commandNumber++
+    }
+
+    println()
+
+    return conveyor
 }

@@ -120,12 +120,10 @@ fun fib(n: Int): Int {
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
-//{
-//    var i = 2
-//    while (n % i != 0) i++
-//    return i
-//} Оптимизировать!!!
+fun minDivisor(n: Int): Int {
+    for (i in 2..sqrt(n.toDouble()).toInt()) if (n % i == 0) return i
+    return n
+}
 
 /**
  * Простая
@@ -133,11 +131,6 @@ fun minDivisor(n: Int): Int = TODO()
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int = TODO()
-//{
-//    var i = n - 1
-//    while (n % i != 0) i--
-//    return i
-//} Оптимизировать!!!
 
 /**
  * Простая
