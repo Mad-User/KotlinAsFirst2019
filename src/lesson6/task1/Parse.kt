@@ -2,7 +2,6 @@
 
 package lesson6.task1
 
-import java.text.FieldPosition
 import kotlin.math.floor
 
 /**
@@ -214,24 +213,23 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun findNextPosition(commands: String, position: Int, movDirection: Short): Int {
+fun findNextBracket(commands: String, commandNumber: Int): Int {
 
-    val expectedElement = if (commands[position] == '[') ']' else '['
-
-    var position = position
     var bracketLevel = 0
 
-    while (commands[position] != expectedElement || bracketLevel != 0) {
+    for (index in commandNumber until commands.length) {
 
-        position += movDirection
+        when (commands[index]) {
 
-        if (commands[position] != expectedElement) {
-            if (commands[position] == '[') bracketLevel++
-            if (commands[position] == ']') bracketLevel--
+            '[' -> bracketLevel++
+
+            ']' -> bracketLevel--
         }
+
+        if (bracketLevel == 0) return index
     }
 
-    return position
+    return -1
 }
 
 fun checkCommands(commands: String) {
@@ -260,8 +258,10 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     val conveyor = MutableList(cells) { 0 }
     var detectorPosition = floor(cells / 2.0).toInt()
 
-    var operationCounter = 0
     var commandNumber = 0
+    var operationCounter = 0
+
+    val order = mutableListOf<Int>()
 
     while (operationCounter < limit && commandNumber < commands.length) {
 
@@ -282,21 +282,19 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '-' -> conveyor[detectorPosition]--
 
             '[' ->
-                if (conveyor[detectorPosition] == 0)
-                    commandNumber = findNextPosition(commands, commandNumber, 1)
+                if (conveyor[detectorPosition] == 0) commandNumber = findNextBracket(commands, commandNumber)
+                else order.add(commandNumber)
 
             ']' ->
-                if (conveyor[detectorPosition] != 0)
-                    commandNumber = findNextPosition(commands, commandNumber, -1)
-
-            else -> ""
+                if (conveyor[detectorPosition] != 0) commandNumber = order.last()
+                else order.remove(order.last())
         }
 
         operationCounter++
         commandNumber++
     }
 
-    println("commands: $commands\nconveyor: $conveyor\n")
+    println("$commands\n${conveyor}\n")
 
     return conveyor
 }
