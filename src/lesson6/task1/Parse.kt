@@ -260,13 +260,16 @@ fun findNextBracket(bracketPosition: MutableList<Pair<Int, Int>>, commands: Stri
 fun checkCommands(commands: String) {
 
     var bracketCounter = 0
-    val allCommands = listOf(">", "<", "+", "-", "[", "]", " ")  /* список всех доступных команд */
+    val allCommands = listOf('>', '<', '+', '-', '[', ']', ' ')  /* список всех доступных команд */
 
     // считаем пары скобок, если у какой-то скобки нет пары - счетчик не примет значение 0
     for (element in commands) {
 
         // бросить ошибку, если элемент не входит в список допустимых
-        require(allCommands.contains(element.toString()))
+        require(allCommands.contains(element))
+
+        // бросить ошибку, если счетчик меньше нуля, так как это означает, что первой скобкой в паре была ']'
+        require(bracketCounter >= 0)
 
         if (element == '[') bracketCounter++
         if (element == ']') bracketCounter--
