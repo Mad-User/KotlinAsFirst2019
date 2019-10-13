@@ -213,24 +213,49 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun findNextBracket(commands: String, commandNumber: Int): Int {
+fun findBracketsPosition(commands: String, bracketPosition: MutableList<Pair<Int, Int>>): MutableList<Pair<Int, Int>> {
+
+    var firstBracket: Int
+    var secondBracket = 0
 
     var bracketLevel = 0
 
-    for (index in commandNumber until commands.length) {
+    for (first in commands.indices)
 
-        when (commands[index]) {
+        if (commands[first] == '[') {
 
-            '[' -> bracketLevel++
+            firstBracket = first
 
-            ']' -> bracketLevel--
+            for (second in first until commands.length) {
+
+                when (commands[second]) {
+
+                    '[' -> bracketLevel++
+
+                    ']' -> bracketLevel--
+                }
+
+                if (commands[second] == ']' && bracketLevel == 0) {
+
+                    secondBracket = second
+
+                    break
+                }
+            }
+
+            bracketPosition.add(firstBracket to secondBracket)
         }
 
-        if (bracketLevel == 0) return index
-    }
-
-    return -1
+    return bracketPosition
 }
+
+fun findNextBracket(bracketPosition: MutableList<Pair<Int, Int>>, commands: String, commandNumber: Int): Int =
+
+    if (commands[commandNumber] == '[') {
+
+        (bracketPosition.find { it.first == commandNumber })!!.second
+
+    } else (bracketPosition.find { it.second == commandNumber })!!.first
 
 fun checkCommands(commands: String) {
 
@@ -256,12 +281,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     checkCommands(commands) // проверка правильности ввода
 
     val conveyor = MutableList(cells) { 0 }
+
+    val bracketPosition = mutableListOf<Pair<Int, Int>>()
+    findBracketsPosition(commands, bracketPosition)
+
     var detectorPosition = floor(cells / 2.0).toInt()
 
     var commandNumber = 0
     var operationCounter = 0
-
-    val order = mutableListOf<Int>()
 
     while (operationCounter < limit && commandNumber < commands.length) {
 
@@ -282,19 +309,17 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '-' -> conveyor[detectorPosition]--
 
             '[' ->
-                if (conveyor[detectorPosition] == 0) commandNumber = findNextBracket(commands, commandNumber)
-                else order.add(commandNumber)
+                if (conveyor[detectorPosition] == 0) commandNumber =
+                    findNextBracket(bracketPosition, commands, commandNumber)
 
             ']' ->
-                if (conveyor[detectorPosition] != 0) commandNumber = order.last()
-                else order.remove(order.last())
+                if (conveyor[detectorPosition] != 0) commandNumber =
+                    findNextBracket(bracketPosition, commands, commandNumber)
         }
 
         operationCounter++
         commandNumber++
     }
-
-    println("$commands\n${conveyor}\n")
 
     return conveyor
 }
