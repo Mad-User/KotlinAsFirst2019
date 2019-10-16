@@ -2,8 +2,6 @@
 
 package lesson6.task1
 
-import kotlin.math.floor
-
 /**
  * Пример
  *
@@ -213,7 +211,9 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun findBracketsPosition(commands: String, bracketPosition: MutableList<Pair<Int, Int>>): MutableList<Pair<Int, Int>> {
+fun findBracketsPosition(commands: String): List<Int> {
+
+    val bracketPosition = mutableListOf<Int>()
 
     var firstBracket: Int
     var secondBracket = 0
@@ -221,41 +221,31 @@ fun findBracketsPosition(commands: String, bracketPosition: MutableList<Pair<Int
     var bracketLevel = 0
 
     for (first in commands.indices)
-
         if (commands[first] == '[') {
-
             firstBracket = first
 
             for (second in first until commands.length) {
-
                 when (commands[second]) {
-
                     '[' -> bracketLevel++
-
                     ']' -> bracketLevel--
                 }
 
                 if (commands[second] == ']' && bracketLevel == 0) {
-
                     secondBracket = second
-
                     break
                 }
             }
 
-            bracketPosition.add(firstBracket to secondBracket)
+            bracketPosition.add(firstBracket)
+            bracketPosition.add(secondBracket)
         }
 
     return bracketPosition
 }
 
-fun findNextBracket(bracketPosition: MutableList<Pair<Int, Int>>, commands: String, commandNumber: Int): Int =
-
-    if (commands[commandNumber] == '[') {
-
-        (bracketPosition.find { it.first == commandNumber })!!.second
-
-    } else (bracketPosition.find { it.second == commandNumber })!!.first
+fun findNextBracket(bracketPosition: List<Int>, commands: String, commandNumber: Int): Int =
+    if (commands[commandNumber] == '[') bracketPosition[bracketPosition.indexOf(commandNumber) + 1]
+    else bracketPosition[bracketPosition.indexOf(commandNumber) - 1]
 
 fun checkCommands(commands: String) {
 
@@ -284,11 +274,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     checkCommands(commands) // проверка правильности ввода
 
     val conveyor = MutableList(cells) { 0 }
+    val bracketPosition = findBracketsPosition(commands)
 
-    val bracketPosition = mutableListOf<Pair<Int, Int>>()
-    findBracketsPosition(commands, bracketPosition)
-
-    var detectorPosition = floor(cells / 2.0).toInt()
+    var detectorPosition = cells / 2
 
     var commandNumber = 0
     var operationCounter = 0
