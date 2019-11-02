@@ -168,24 +168,16 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mapMerge(
-    map: Map<String, String>,
-    result: MutableMap<String, String>,
-    separator: String = ", "
-): Map<String, String> {
-    for ((key, value) in map)
-        if (!(result.containsKey(key))) result[key] = value
-        else
-            if (!result[key]!!.contains(value) || value == "") result[key] += "$separator$value"
-
-    return result
-}
-
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val result = mutableMapOf<String, String>()
 
-    mapMerge(mapA, result)
-    mapMerge(mapB, result)
+    for ((key, value) in mapA)
+        result[key] = value
+
+    for ((key, value) in mapB) {
+        result[key] = result.getOrDefault(key, value)
+        if (result[key] != value) result[key] += ", $value"
+    }
 
     return result
 }
