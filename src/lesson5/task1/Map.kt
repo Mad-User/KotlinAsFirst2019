@@ -243,6 +243,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list = mutableListOf<Int>()
+    val new = chars.toMutableList()
+
+    new.removeIf { new.count() >= 1 }
 
     for (element in chars) list.add(word.toLowerCase().count { it == element.toLowerCase() })
 
