@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import javax.swing.plaf.basic.BasicPopupMenuSeparatorUI
+
 /**
  * Пример
  *
@@ -168,7 +170,27 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mapMerge(
+    map: Map<String, String>,
+    result: MutableMap<String, String>,
+    separator: String = ", "
+): Map<String, String> {
+    for ((key, value) in map)
+        if (!(result.containsKey(key))) result[key] = value
+        else
+            if (!result[key]!!.contains(value) && !result[key]!!.contains(",")) result[key] += "$separator$value"
+
+    return result
+}
+
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val result = mutableMapOf<String, String>()
+
+    mapMerge(mapA, result)
+    mapMerge(mapB, result)
+
+    return result
+}
 
 /**
  * Средняя
