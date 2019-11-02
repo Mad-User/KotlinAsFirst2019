@@ -176,7 +176,7 @@ fun mapMerge(
     for ((key, value) in map)
         if (!(result.containsKey(key))) result[key] = value
         else
-            if (!result[key]!!.contains(value) && !result[key]!!.contains(separator)) result[key] += "$separator$value"
+            if (!result[key]!!.contains(value)) result[key] += "$separator$value"
 
     return result
 }
