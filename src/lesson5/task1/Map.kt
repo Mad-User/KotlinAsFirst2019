@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import javax.swing.plaf.basic.BasicPopupMenuSeparatorUI
-
 /**
  * Пример
  *
