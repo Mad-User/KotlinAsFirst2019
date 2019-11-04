@@ -245,7 +245,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list = mutableListOf<Int>()
     val new = chars.toMutableList()
 
-    new.removeIf { new.count() >= 1 }
+    new.distinct()
 
     for (element in chars) list.add(word.toLowerCase().count { it == element.toLowerCase() })
 
