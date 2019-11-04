@@ -247,7 +247,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 
     var index = 0
     while (index < new.size)
-        if (new.count { it == new[index] } > 1) new.remove(new[index])
+        if (new.count { it.toLowerCase() == new[index].toLowerCase() } > 1) new.remove(new[index])
         else index++
 
     for (element in new) list.add(word.toLowerCase().count { it == element.toLowerCase() })
