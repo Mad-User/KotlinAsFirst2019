@@ -114,7 +114,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((key, value) in a)
-        if (!(b.containsKey(key) && b.containsValue(value))) return false
+        if (!(b.containsKey(key) && b[key] == value)) return false
 
     return true
 }
@@ -133,7 +133,10 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
+    for ((key, value) in b)
+        if (a.containsKey(key) && a[key] == value) a.remove(key, value)
+}
 
 /**
  * Простая
@@ -230,7 +233,18 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val filteredStuff = stuff.filter { it.value.first == kind }
+
+    if (filteredStuff.isEmpty()) return null
+
+    var intermediate: Pair<String, Pair<String, Double>> = "" to ("" to Double.MAX_VALUE)
+
+    for (item in filteredStuff)
+        if (item.value.second <= intermediate.second.second) intermediate = item.toPair()
+
+    return intermediate.first
+}
 
 /**
  * Средняя
@@ -287,7 +301,22 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun buildCharList(word: String): List<Char> {
+    val list = mutableListOf<Char>()
+
+    for (item in word) list.add(item)
+
+    return list
+}
+
+fun hasAnagrams(words: List<String>): Boolean {
+    for (first in words)
+        for (second in words)
+            if (first != second)
+                if (canBuildFrom(buildCharList(first), second)) return true
+
+    return false
+}
 
 /**
  * Сложная
@@ -313,7 +342,37 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun setToList(list: MutableList<String>, set: Set<String>) {
+    for (item in set) list.add(item)
+}
+
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val allPeoples = mutableListOf<String>()
+    val handShakesList = mutableMapOf<String, Set<String>>()
+
+    // создание создание полного списка имен
+    for ((key, value) in friends) {
+        allPeoples.add(key)
+        setToList(allPeoples, value)
+    }
+
+    // удаление повторяющихся элементов
+    var index = 0
+    while (index < allPeoples.size)
+        if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
+        else index++
+
+//    val midList = mutableListOf<String>()
+//    val midSet = mutableSetOf<String>()
+//    for (unit in allPeoples)
+//        if (friends.containsKey(unit)) handShakesList[unit] = friends[unit]
+//        else handShakesList[unit] = emptySet()
+
+    println(allPeoples)
+    println(handShakesList)
+
+    return handShakesList
+}
 
 /**
  * Сложная
