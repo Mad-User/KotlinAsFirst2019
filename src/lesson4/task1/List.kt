@@ -130,15 +130,7 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    var mean = 0.0
-
-    for (element in list) mean += element
-
-    return if (mean != 0.0) mean / list.size
-    else mean
-}
-
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
 /**
  * Средняя
  *
@@ -150,8 +142,7 @@ fun mean(list: List<Double>): Double {
 fun center(list: MutableList<Double>): MutableList<Double> {
     val mean = mean(list)
 
-    if (mean != 0.0)
-        for (index in list.indices) list[index] -= mean
+    for (index in list.indices) list[index] -= mean
 
     return list
 }
@@ -203,14 +194,11 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     var sum = 0
-    var intermediate: Int
 
-    if (list.size != 0)
-        for (index in list.indices) {
-            intermediate = list[index]
-            list[index] += sum
-            sum += intermediate
-        }
+    for (index in list.indices) {
+        sum += list[index]
+        list[index] = sum
+    }
 
     return list
 }
