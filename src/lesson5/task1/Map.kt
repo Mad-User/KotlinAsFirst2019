@@ -172,10 +172,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val result = mutableMapOf<String, String>()
-
-    for ((key, value) in mapA)
-        result[key] = value
+    val result = mapA.toMutableMap()
 
     for ((key, value) in mapB) {
         result[key] = result.getOrDefault(key, value)
@@ -342,37 +339,38 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun setToList(list: MutableList<String>, set: Set<String>) {
-    for (item in set) list.add(item)
-}
+//fun setToList(list: MutableList<String>, set: Set<String>) {
+//    for (item in set) list.add(item)
+//}
 
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val allPeoples = mutableListOf<String>()
-    val handShakesList = mutableMapOf<String, Set<String>>()
-
-    // создание создание полного списка имен
-    for ((key, value) in friends) {
-        allPeoples.add(key)
-        setToList(allPeoples, value)
-    }
-
-    // удаление повторяющихся элементов
-    var index = 0
-    while (index < allPeoples.size)
-        if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
-        else index++
-
-//    val midList = mutableListOf<String>()
-//    val midSet = mutableSetOf<String>()
-//    for (unit in allPeoples)
-//        if (friends.containsKey(unit)) handShakesList[unit] = friends[unit]
-//        else handShakesList[unit] = emptySet()
-
-    println(allPeoples)
-    println(handShakesList)
-
-    return handShakesList
-}
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+//{
+//    val allPeoples = mutableListOf<String>()
+//    val handShakesList = mutableMapOf<String, Set<String>>()
+//
+//    // создание создание полного списка имен
+//    for ((key, value) in friends) {
+//        allPeoples.add(key)
+//        setToList(allPeoples, value)
+//    }
+//
+//    // удаление повторяющихся элементов
+//    var index = 0
+//    while (index < allPeoples.size)
+//        if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
+//        else index++
+//
+////    val midList = mutableListOf<String>()
+////    val midSet = mutableSetOf<String>()
+////    for (unit in allPeoples)
+////        if (friends.containsKey(unit)) handShakesList[unit] = friends[unit]
+////        else handShakesList[unit] = emptySet()
+//
+//    println(allPeoples)
+//    println(handShakesList)
+//
+//    return handShakesList
+//}
 
 /**
  * Сложная
