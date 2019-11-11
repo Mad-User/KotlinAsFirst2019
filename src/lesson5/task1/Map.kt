@@ -307,6 +307,8 @@ fun buildCharList(word: String): List<Char> {
 }
 
 fun hasAnagrams(words: List<String>): Boolean {
+    if (words.distinct() != words) return true
+
     for (first in words)
         for (second in words)
             if (first != second)
