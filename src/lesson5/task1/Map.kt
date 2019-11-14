@@ -114,7 +114,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((key, value) in a)
-        if (!(b.containsKey(key) && b[key] == value)) return false
+        if (b[key] != value) return false
 
     return true
 }
@@ -135,7 +135,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key, value) in b)
-        if (a.containsKey(key) && a[key] == value) a.remove(key, value)
+        if (a[key] == value) a.remove(key, value)
 }
 
 /**
@@ -298,13 +298,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun buildCharList(word: String): List<Char> {
-    val list = mutableListOf<Char>()
-
-    for (item in word) list.add(item)
-
-    return list
-}
+fun buildCharList(word: String): List<Char> = word.toList()
 
 fun hasAnagrams(words: List<String>): Boolean {
     if (words.distinct() != words) return true
