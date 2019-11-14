@@ -131,6 +131,7 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
+
 /**
  * Средняя
  *
@@ -193,12 +194,15 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    var sum = 0
+    list.add(0, 0)
 
-    for (index in list.indices) {
-        sum += list[index]
-        list[index] = sum
-    }
+    if (list.size > 1)
+        for (index in 1 until list.size) {
+            list[0] += list[index]
+            list[index] = list[0]
+        }
+
+    list.removeAt(0)
 
     return list
 }
