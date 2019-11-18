@@ -407,7 +407,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val mainSet = mutableSetOf<String>()
     val intermediateMap = mutableListOf<Pair<String, Double>>()
 
-    for ((key, value) in treasures) intermediateMap.add(key to value.first.toDouble() / value.second.toDouble())
+    for ((key, value) in treasures) intermediateMap.add(key to (value.second.toDouble() / value.first.toDouble()))
 
     val sorted = intermediateMap.sortedBy { it.second }
 
