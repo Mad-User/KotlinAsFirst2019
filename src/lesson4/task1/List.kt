@@ -194,15 +194,9 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    list.add(0, 0)
-
-    if (list.size > 1)
-        for (index in 1 until list.size) {
-            list[0] += list[index]
-            list[index] = list[0]
-        }
-
-    list.removeAt(0)
+    for (index in 1 until list.size) {
+        list[index] += list[index - 1]
+    }
 
     return list
 }

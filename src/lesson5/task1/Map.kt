@@ -145,14 +145,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val list = mutableListOf<String>()
-
-    for (element in a)
-        if (b.contains(element)) list.add(element)
-
-    return list.distinct()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя
@@ -235,7 +228,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 
     if (filteredStuff.isEmpty()) return null
 
-    var intermediate: Pair<String, Pair<String, Double>> = "" to ("" to Double.MAX_VALUE)
+    var intermediate = "" to ("" to Double.MAX_VALUE)
 
     for (item in filteredStuff)
         if (item.value.second <= intermediate.second.second) intermediate = item.toPair()
@@ -408,4 +401,30 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var capacity = capacity
+
+    val mainSet = mutableSetOf<String>()
+    val intermediateMap = mutableListOf<Pair<String, Double>>()
+
+    for ((key, value) in treasures) intermediateMap.add(key to value.first.toDouble() / value.second.toDouble())
+
+    val sorted = intermediateMap.sortedBy { it.second }
+
+    var index = sorted.lastIndex
+    var midKey: String
+    var midWeight: Int
+    while (capacity > 0 && index >= 0) {
+        midKey = sorted[index].first
+        midWeight = treasures[midKey]?.first!!
+
+        if (midWeight <= capacity) {
+            mainSet.add(midKey)
+            capacity -= midWeight
+        }
+
+        index--
+    }
+
+    return mainSet
+}
