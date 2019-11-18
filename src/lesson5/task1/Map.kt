@@ -296,7 +296,7 @@ fun hasAnagrams(words: List<String>): Boolean {
 
     for (first in words)
         for (second in words)
-            if (first != second)
+            if (first != second && first != "" && second != "")
                 if (canBuildFrom(first.toList(), second)) return true
 
     return false
@@ -403,26 +403,9 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     var capacity = capacity
 
     val mainSet = mutableSetOf<String>()
-    val intermediateMap = mutableListOf<Pair<String, Double>>()
+    val filteredTreasures = treasures.filterValues { it.first <= capacity }
 
-    for ((key, value) in treasures) intermediateMap.add(key to (value.second.toDouble() / value.first.toDouble()))
-
-    val sorted = intermediateMap.sortedBy { it.second }
-
-    var index = sorted.lastIndex
-    var midKey: String
-    var midWeight: Int
-    while (capacity > 0 && index >= 0) {
-        midKey = sorted[index].first
-        midWeight = treasures[midKey]?.first!!
-
-        if (midWeight <= capacity) {
-            mainSet.add(midKey)
-            capacity -= midWeight
-        }
-
-        index--
-    }
+    println(" capacity: $capacity\n treasures: $treasures\n filteredTreasures: $filteredTreasures\n")
 
     return mainSet
 }

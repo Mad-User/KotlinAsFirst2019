@@ -263,6 +263,19 @@ class Tests {
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
         assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
         assertTrue(hasAnagrams(listOf("", "")))
+        assertFalse(
+            hasAnagrams(
+                listOf(
+                    "",
+                    "a",
+                    "p",
+                    "v",
+                    "e",
+                    "d",
+                    "y"
+                )
+            )
+        )
     }
 
     @Test
