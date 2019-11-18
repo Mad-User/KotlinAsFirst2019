@@ -291,15 +291,13 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun buildCharList(word: String): List<Char> = word.toList()
-
 fun hasAnagrams(words: List<String>): Boolean {
     if (words.distinct() != words) return true
 
     for (first in words)
         for (second in words)
             if (first != second)
-                if (canBuildFrom(buildCharList(first), second)) return true
+                if (canBuildFrom(first.toList(), second)) return true
 
     return false
 }
