@@ -403,9 +403,13 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     var capacity = capacity
 
     val mainSet = mutableSetOf<String>()
-    val filteredTreasures = treasures.filterValues { it.first <= capacity }
 
-    println(" capacity: $capacity\n treasures: $treasures\n filteredTreasures: $filteredTreasures\n")
+    val sortedTreasures = treasures
+        .toList()
+        .filter { it.second.first <= capacity }
+        .sortedByDescending { it.second.first }
+
+    println(" capacity: $capacity\n treasures: $treasures\n sortedTreasures: $sortedTreasures\n")
 
     return mainSet
 }
