@@ -296,7 +296,7 @@ fun hasAnagrams(words: List<String>): Boolean {
 
     for (first in words)
         for (second in words)
-            if (first != second && first != "" && second != "")
+            if (first.toLowerCase() != second.toLowerCase() && first != "" && second != "")
                 if (canBuildFrom(first.toList(), second)) return true
 
     return false
