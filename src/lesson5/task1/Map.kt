@@ -409,7 +409,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         .filter { it.second.first <= capacity }
         .sortedByDescending { it.second.first }
 
-    println(" capacity: $capacity\n treasures: $treasures\n sortedTreasures: $sortedTreasures\n")
+    if (sortedTreasures.isNotEmpty()) mainSet.add(sortedTreasures[0].first)
 
     return mainSet
 }
