@@ -187,22 +187,22 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val map = mutableMapOf<String, Double>()
+    val countMap = mutableMapOf<String, Int>()
 
-    var count = 0.0
     var intermediate: Double
 
     for (pair in stockPrices)
-        if (!map.containsKey(pair.first)) map += pair
-        else map[pair.first] = map[pair.first]!!.plus(pair.second)
+        if (!map.containsKey(pair.first)) {
+            map += pair
+            countMap += pair.first to 1
+        } else {
+            map[pair.first] = map[pair.first]!!.plus(pair.second)
+            countMap[pair.first] = countMap[pair.first]!!.plus(1)
+        }
 
     for (key in map.keys) {
-        for ((first) in stockPrices)
-            if (key == first) count++
-
-        intermediate = map[key]!! / count
+        intermediate = map[key]!! / countMap[key]!!
         map[key] = intermediate
-
-        count = 0.0
     }
 
     return map
@@ -326,38 +326,54 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-//fun setToList(list: MutableList<String>, set: Set<String>) {
-//    for (item in set) list.add(item)
-//}
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    fun setToList(list: MutableList<String>, set: Set<String>) {
+        for (item in set) list.add(item)
+    }
 
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
-//{
-//    val allPeoples = mutableListOf<String>()
-//    val handShakesList = mutableMapOf<String, Set<String>>()
-//
-//    // создание создание полного списка имен
-//    for ((key, value) in friends) {
-//        allPeoples.add(key)
-//        setToList(allPeoples, value)
-//    }
-//
-//    // удаление повторяющихся элементов
-//    var index = 0
-//    while (index < allPeoples.size)
-//        if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
-//        else index++
-//
-////    val midList = mutableListOf<String>()
-////    val midSet = mutableSetOf<String>()
-////    for (unit in allPeoples)
-////        if (friends.containsKey(unit)) handShakesList[unit] = friends[unit]
-////        else handShakesList[unit] = emptySet()
-//
-//    println(allPeoples)
-//    println(handShakesList)
-//
-//    return handShakesList
-//}
+    fun createAllPeoplesList(friends: Map<String, Set<String>>): List<String> {
+        val allPeoples = mutableListOf<String>()
+
+        // создание полного списка имен
+        for ((key, value) in friends) {
+            allPeoples.add(key)
+            setToList(allPeoples, value)
+        }
+
+        // удаление повторяющихся элементов
+        var index = 0
+        while (index < allPeoples.size)
+            if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
+            else index++
+
+        return allPeoples
+    }
+
+    fun new_fun(man: String, friends: Map<String, Set<String>>): Set<String> {
+        val set = mutableSetOf<String>()
+
+        val mid = friends[man]
+        if (mid != null) {
+            for (i in mid) {
+                if (friends.containsKey(i)) set.addAll(new_fun(i, friends))
+                else set.add(i)
+            }
+        }
+
+        return set
+    }
+
+    val allPeoples = createAllPeoplesList(friends)
+    val handShakesList = mutableMapOf<String, Set<String>>()
+
+    for (man in allPeoples) handShakesList += man to new_fun(man, friends)
+
+    println(friends)
+    println(allPeoples)
+    println(handShakesList)
+
+    return handShakesList
+}
 
 /**
  * Сложная
@@ -399,17 +415,19 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var capacity = capacity
-
-    val mainSet = mutableSetOf<String>()
-
-    val sortedTreasures = treasures
-        .toList()
-        .filter { it.second.first <= capacity }
-        .sortedByDescending { it.second.first }
-
-    if (sortedTreasures.isNotEmpty()) mainSet.add(sortedTreasures[0].first)
-
-    return mainSet
-}
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+//{
+//    if (treasures.isEmpty() || capacity == 0) return emptySet()
+//
+//    var capacity = capacity
+//
+//    val mainSet = mutableSetOf<String>()
+//
+//    val sortedTreasures = treasures
+//        .toList()
+//        .filter { it.second.first <= capacity }
+//
+//    if (sortedTreasures.isNotEmpty()) mainSet.add(sortedTreasures[0].first)
+//
+//    return mainSet
+//}
