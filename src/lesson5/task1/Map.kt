@@ -323,6 +323,8 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    println("friends: $friends")
+
     fun findAllNames(friends: Map<String, Set<String>>): List<String> {
         val allNames = mutableListOf<String>()
 
@@ -331,12 +333,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             allNames.addAll(value)
         }
 
-        var index = 0
-        while (index < allNames.size)
-            if (allNames.count { it == allNames[index] } > 1) allNames.remove(allNames[index])
-            else index++
-
-        return allNames
+        return allNames.distinct()
     }
 
     fun createNamesSet(name: String, friends: Map<String, Set<String>>): Set<String> {
@@ -344,19 +341,17 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 
         friends[name]?.let { set.addAll(it) }
 
-        for (i in set)
-            if (friends.containsKey(i)) friends[i]?.let { set.addAll(it) }
-            else set.addAll(createNamesSet(i, friends))
+        if (set.isNotEmpty())
+            for (i in friends[name]!!)
+                if (friends.containsKey(i)) friends[i]?.let { set.addAll(it) }
 
         return set
     }
 
     val handShakesMap = mutableMapOf<String, Set<String>>()
 
-    for (name in findAllNames(friends)) {
-        val set = createNamesSet(name, friends)
-        handShakesMap += name to set.filter { it != name }.toSet()
-    }
+    for (name in findAllNames(friends))
+        handShakesMap += name to createNamesSet(name, friends).filter { it != name }.toSet()
 
     return handShakesMap
 }
