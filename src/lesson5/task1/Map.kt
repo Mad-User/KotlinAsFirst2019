@@ -323,52 +323,42 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    fun setToList(list: MutableList<String>, set: Set<String>) {
-        for (item in set) list.add(item)
-    }
+    fun findAllNames(friends: Map<String, Set<String>>): List<String> {
+        val allNames = mutableListOf<String>()
 
-    fun createAllPeoplesList(friends: Map<String, Set<String>>): List<String> {
-        val allPeoples = mutableListOf<String>()
-
-        // создание полного списка имен
         for ((key, value) in friends) {
-            allPeoples.add(key)
-            setToList(allPeoples, value)
+            allNames.add(key)
+            allNames.addAll(value)
         }
 
-        // удаление повторяющихся элементов
         var index = 0
-        while (index < allPeoples.size)
-            if (allPeoples.count { it == allPeoples[index] } > 1) allPeoples.remove(allPeoples[index])
+        while (index < allNames.size)
+            if (allNames.count { it == allNames[index] } > 1) allNames.remove(allNames[index])
             else index++
 
-        return allPeoples
+        return allNames
     }
 
-    fun new_fun(man: String, friends: Map<String, Set<String>>): Set<String> {
+    fun createNamesSet(name: String, friends: Map<String, Set<String>>): Set<String> {
         val set = mutableSetOf<String>()
 
-        val mid = friends[man]
-        if (mid != null) {
-            for (i in mid) {
-                if (friends.containsKey(i)) set.addAll(new_fun(i, friends))
-                else set.add(i)
-            }
-        }
+        friends[name]?.let { set.addAll(it) }
+
+        for (i in set)
+            if (friends.containsKey(i)) friends[i]?.let { set.addAll(it) }
+            else set.addAll(createNamesSet(i, friends))
 
         return set
     }
 
-    val allPeoples = createAllPeoplesList(friends)
-    val handShakesList = mutableMapOf<String, Set<String>>()
+    val handShakesMap = mutableMapOf<String, Set<String>>()
 
-    for (man in allPeoples) handShakesList += man to new_fun(man, friends)
+    for (name in findAllNames(friends)) {
+        val set = createNamesSet(name, friends)
+        handShakesMap += name to set.filter { it != name }.toSet()
+    }
 
-    println(friends)
-    println(allPeoples)
-    println(handShakesList)
-
-    return handShakesList
+    return handShakesMap
 }
 
 /**
