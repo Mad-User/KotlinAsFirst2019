@@ -328,10 +328,10 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     fun findAllNames(friends: Map<String, Set<String>>): List<String> {
         val allNames = mutableListOf<String>()
 
-        for ((key, value) in friends) {
-            allNames.add(key)
-            allNames.addAll(value)
-        }
+        for ((key) in friends) allNames.add(key)
+
+
+        for (pair in friends) allNames.addAll(pair.value)
 
         return allNames.distinct()
     }

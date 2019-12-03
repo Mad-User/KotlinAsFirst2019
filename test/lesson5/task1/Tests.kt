@@ -291,51 +291,64 @@ class Tests {
             )
         )
     }
-/*
-
- */
 
     @Test
     @Tag("Hard")
     fun propagateHandshakes() {
+//        assertEquals(
+//            mapOf(
+//                "Marat" to setOf("Mikhail", "Sveta"),
+//                "Sveta" to setOf("Mikhail"),
+//                "Mikhail" to setOf()
+//            ),
+//            propagateHandshakes(
+//                mapOf(
+//                    "Marat" to setOf("Sveta"),
+//                    "Sveta" to setOf("Mikhail")
+//                )
+//            )
+//        )
+//        assertEquals(
+//            mapOf(
+//                "Marat" to setOf("Mikhail", "Sveta"),
+//                "Sveta" to setOf("Marat", "Mikhail"),
+//                "Mikhail" to setOf("Sveta", "Marat")
+//            ),
+//            propagateHandshakes(
+//                mapOf(
+//                    "Marat" to setOf("Mikhail", "Sveta"),
+//                    "Sveta" to setOf("Marat"),
+//                    "Mikhail" to setOf("Sveta")
+//                )
+//            )
+//        )
+//        assertEquals(
+//            mapOf(
+//                "1" to setOf(),
+//                "0" to setOf("2", "1"),
+//                "2" to setOf("0", "1")
+//            ),
+//            propagateHandshakes(
+//                mapOf(
+//                    "1" to setOf(),
+//                    "0" to setOf("2"),
+//                    "2" to setOf("0", "1")
+//                )
+//            )
+//        )
         assertEquals(
             mapOf(
-                "Marat" to setOf("Mikhail", "Sveta"),
-                "Sveta" to setOf("Mikhail"),
-                "Mikhail" to setOf()
+                "1" to setOf("2", "38f", "0"),
+                "0" to setOf("1", "2", "38f"),
+                "2" to setOf("1", "38f", "0"),
+                "38f" to setOf("1", "2", "0")
             ),
             propagateHandshakes(
                 mapOf(
-                    "Marat" to setOf("Sveta"),
-                    "Sveta" to setOf("Mikhail")
-                )
-            )
-        )
-        assertEquals(
-            mapOf(
-                "Marat" to setOf("Mikhail", "Sveta"),
-                "Sveta" to setOf("Marat", "Mikhail"),
-                "Mikhail" to setOf("Sveta", "Marat")
-            ),
-            propagateHandshakes(
-                mapOf(
-                    "Marat" to setOf("Mikhail", "Sveta"),
-                    "Sveta" to setOf("Marat"),
-                    "Mikhail" to setOf("Sveta")
-                )
-            )
-        )
-        assertEquals(
-            mapOf(
-                "1" to setOf(),
-                "0" to setOf("2", "1"),
-                "2" to setOf("0", "1")
-            ),
-            propagateHandshakes(
-                mapOf(
-                    "1" to setOf(),
-                    "0" to setOf("2"),
-                    "2" to setOf("0", "1")
+                    "1" to setOf("2"),
+                    "0" to setOf("1"),
+                    "2" to setOf("1", "38f"),
+                    "38f" to setOf("1", "2", "0")
                 )
             )
         )
