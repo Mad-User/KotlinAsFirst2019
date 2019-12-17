@@ -54,16 +54,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val map = mapOf<String, Int>()
-
-    for (line in File(inputName).readLines()) println(line)
-
-    println("\n\n$substrings")
-
-    return map
-}
-
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
 /**
  * Средняя
@@ -117,7 +108,15 @@ fun centerFile(inputName: String, outputName: String) {
  * 1) Каждая строка входного и выходного файла не должна начинаться или заканчиваться пробелом.
  * 2) Пустые строки или строки из пробелов трансформируются в пустые строки без пробелов.
  * 3) Строки из одного слова выводятся без пробелов.
- * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых).
+ * 4) Чи
+    val map = mapOf<String, Int>()
+
+    for (line in File(inputName).readLines()) println(line)
+
+    println("\n\n$substrings")
+
+    return map
+}сло строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых).
  *
  * Равномерность определяется следующими формальными правилами:
  * 5) Число пробелов между каждыми двумя парами соседних слов не должно отличаться более, чем на 1.
@@ -435,7 +434,36 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+fun counter(lhv: Int, rhv: Int, list: MutableList<String>): Pair<String, Boolean> {
+    var pair = "" to false
+
+
+
+    return pair
+}
+
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val list = mutableListOf<String>()
+
+    var strNum = 0
+
+    // main loop
+    var isWork = true
+    while (isWork) {
+        val pair: Pair<String, Boolean> = counter(lhv, rhv, list)
+
+        list.add(strNum, pair.first)
+        strNum++
+
+        isWork = pair.second
+    }
+
+    // file write
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in list) {
+        outputStream.write(line)
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
