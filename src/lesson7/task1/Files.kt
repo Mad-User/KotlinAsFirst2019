@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import kotlinx.html.singletonMapOf
 import java.io.File
 
 /**
@@ -53,7 +54,15 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val map = mapOf<String, Int>()
+
+    for (line in File(inputName).readLines()) println(line)
+
+    println("\n\n$substrings")
+
+    return map
+}
 
 
 /**
