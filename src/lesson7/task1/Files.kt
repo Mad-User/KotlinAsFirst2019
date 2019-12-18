@@ -92,6 +92,7 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     val lines = mutableListOf<String>()
 
+    // удаление лишних пробелов
     for (line in File(inputName).readLines()) lines.add(line.trim(' '))
 
     var maxLength = 0
@@ -101,6 +102,7 @@ fun centerFile(inputName: String, outputName: String) {
         }
     }
 
+    // запись файла с одновременным добавлением пробелов
     File(outputName).bufferedWriter().use {
         for (line in lines) {
             it.write(" ".repeat((maxLength - line.length) / 2) + line)
@@ -137,7 +139,41 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val lines = mutableListOf<String>()
+
+    // удаление лишних пробелов
+    for (line in File(inputName).readLines())
+        lines += line
+            .replace("[\\s]{2,}".toRegex(), " ")
+            .trim(' ')
+
+    // нахождение максимальной длины строки
+    var maxLength = 0
+    for (line in lines) {
+        if (line.length > maxLength) {
+            maxLength = line.length
+        }
+    }
+
+    File(outputName).bufferedWriter().use { bufferedWriter ->                                                           // открыть файл и начать в него записывать
+        for (index in lines.indices) {                                                                                  // главный цикл. проходит по всем строкам. для обработки
+            val line = lines[index]                                                                                     // строка в обработке. для уменьшения кол-ва вызовов
+            val length = line.length                                                                                    // длина строки. для вычасленя лямбды
+            val countSpace = line.count { it == ' ' }                                                                   // подсчет количества пробелов. для нахождения размеров вставок между словами для выравнивания
+            val lambda = maxLength - length + countSpace                                                                // показывает сколько необходимо символов для достижения максимальной длины
+
+            if (countSpace != 0) {                                                                                      // исключает возможность деления на 0
+                val bufferLine = if (lambda % countSpace != 0) {                                                        // главная проверка. лямбда / кол-во_пробелов - для выбора пути решения
+                    line.replace(" ", " ".repeat((lambda / countSpace)))
+                } else
+                    line.replace(" ", " ".repeat(lambda / countSpace))    // работает!!!                   // если лямбда делится на кол-во_пробелов без остатка - можно за оду операцию заполнить строку
+
+                bufferedWriter.write(bufferLine)
+            } else bufferedWriter.write(line)
+
+            bufferedWriter.newLine()
+        }
+    }
 }
 
 /**
