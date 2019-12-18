@@ -115,7 +115,28 @@ Basic, Ruby, Swift.
         )
         File("temp.txt").delete()
 
+        centerFile("input/center_in2.txt", "temp.txt")
+        assertFileContent(
+            "temp.txt",
+            "абааааааа\nабааааааа,"
+        )
+        File("temp.txt").delete()
+
     }
+
+/*
+    "text" -> "БААААААА\nбааа; "
+
+center_in2
+
+Output:
+
+"БААААААА\n  бааа;"
+
+Expected output:
+
+"БААААААА\n бааа;"
+ */
 
     @Test
     @Tag("Hard")

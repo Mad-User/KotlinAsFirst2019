@@ -89,36 +89,24 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
-// ф-я для нахождения центра строки, со сдвигом в лево
-fun findCenter(str: String): Int = str.trim(' ').length / 2
-
-// функция для добаиления пробелов
-fun gapAdder(inputStr: String, maxStrCenter: Int): String =
-    "".padStart(maxStrCenter - findCenter(inputStr)).plus(inputStr.trim(' '))
-
 fun centerFile(inputName: String, outputName: String) {
-    var buffer: Int
+    val lines = mutableListOf<String>()
 
-    var maxStrCenter = 0 // индекс центра строки
+    for (line in File(inputName).readLines()) lines.add(line.trim(' '))
 
-    // поиск стоки максимольной длины
-    for (line in File(inputName).readLines()) {
-        buffer = findCenter(line)
-
-        if (buffer > maxStrCenter) maxStrCenter = buffer
+    var maxLength = 0
+    for (line in lines) {
+        if (line.length > maxLength) {
+            maxLength = line.length
+        }
     }
 
-    // обработка строк строк
-    val list = mutableListOf<String>()
-    for (line in File(inputName).readLines()) list.add(gapAdder(line, maxStrCenter))
-
-    // заполнение output файла
-    val outputFile = File(outputName).bufferedWriter()
-    for (line in list) {
-        outputFile.write(line)
-        outputFile.newLine()
+    File(outputName).bufferedWriter().use {
+        for (line in lines) {
+            it.write(" ".repeat((maxLength - line.length) / 2) + line)
+            it.newLine()
+        }
     }
-    outputFile.close()
 }
 
 /**
@@ -135,15 +123,7 @@ fun centerFile(inputName: String, outputName: String) {
  * 1) Каждая строка входного и выходного файла не должна начинаться или заканчиваться пробелом.
  * 2) Пустые строки или строки из пробелов трансформируются в пустые строки без пробелов.
  * 3) Строки из одного слова выводятся без пробелов.
- * 4) Чи
-val map = mapOf<String, Int>()
-
-for (line in File(inputName).readLines()) println(line)
-
-println("\n\n$substrings")
-
-return map
-}сло строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых).
+ * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых).
  *
  * Равномерность определяется следующими формальными правилами:
  * 5) Число пробелов между каждыми двумя парами соседних слов не должно отличаться более, чем на 1.
