@@ -245,13 +245,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    var sum = 0
-
-    for (item in word) if (chars.contains(item)) sum++
-
-    return sum == word.length
-}
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.containsAll(word.toList())
 
 /**
  * Средняя
@@ -293,7 +287,7 @@ fun hasAnagrams(words: List<String>): Boolean {
     for (first in words)
         for (second in words)
             if (first.toLowerCase() != second.toLowerCase() && first != "" && second != "")
-                if (canBuildFrom(first.toList(), second)) return true
+                if (first.toList().containsAll(second.toList())) return true
 
     return false
 }
