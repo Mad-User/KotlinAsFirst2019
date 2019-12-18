@@ -322,39 +322,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    println("friends: $friends")
-
-    fun findAllNames(friends: Map<String, Set<String>>): List<String> {
-        val allNames = mutableListOf<String>()
-
-        for ((key) in friends) allNames.add(key)
-
-
-        for (pair in friends) allNames.addAll(pair.value)
-
-        return allNames.distinct()
-    }
-
-    fun createNamesSet(name: String, friends: Map<String, Set<String>>): Set<String> {
-        val set = mutableSetOf<String>()
-
-        friends[name]?.let { set.addAll(it) }
-
-        if (set.isNotEmpty())
-            for (i in friends[name]!!)
-                if (friends.containsKey(i)) friends[i]?.let { set.addAll(it) }
-
-        return set
-    }
-
-    val handShakesMap = mutableMapOf<String, Set<String>>()
-
-    for (name in findAllNames(friends))
-        handShakesMap += name to createNamesSet(name, friends).filter { it != name }.toSet()
-
-    return handShakesMap
-}
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
 
 /**
  * Сложная
@@ -397,18 +365,3 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
-//{
-//    if (treasures.isEmpty() || capacity == 0) return emptySet()
-//
-//    var capacity = capacity
-//
-//    val mainSet = mutableSetOf<String>()
-//
-//    val sortedTreasures = treasures
-//        .toList()
-//        .filter { it.second.first <= capacity }
-//
-//    if (sortedTreasures.isNotEmpty()) mainSet.add(sortedTreasures[0].first)
-//
-//    return mainSet
-//}
