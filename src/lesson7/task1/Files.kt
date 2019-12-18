@@ -443,27 +443,30 @@ fun counter(lhv: Int, rhv: Int, list: MutableList<String>): Pair<String, Boolean
 }
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    val list = mutableListOf<String>()
-
-    var strNum = 0
-
-    // main loop
-    var isWork = true
-    while (isWork) {
-        val pair: Pair<String, Boolean> = counter(lhv, rhv, list)
-
-        list.add(strNum, pair.first)
-        strNum++
-
-        isWork = pair.second
-    }
-
-    // file write
-    val outputStream = File(outputName).bufferedWriter()
-    for (line in list) {
-        outputStream.write(line)
-        outputStream.newLine()
-    }
-    outputStream.close()
+    TODO()
 }
+//{
+//    val list = mutableListOf<String>()
+//
+//    var strNum = 0
+//
+//    // main loop
+//    var isWork = true
+//    while (isWork) {
+//        val pair: Pair<String, Boolean> = counter(lhv, rhv, list)
+//
+//        list.add(strNum, pair.first)
+//        strNum++
+//
+//        isWork = pair.second
+//    }
+//
+//    // file write
+//    val outputStream = File(outputName).bufferedWriter()
+//    for (line in list) {
+//        outputStream.write(line)
+//        outputStream.newLine()
+//    }
+//    outputStream.close()
+//}
 
