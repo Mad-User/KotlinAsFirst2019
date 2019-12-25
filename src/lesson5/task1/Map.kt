@@ -245,7 +245,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.containsAll(word.toList())
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    var sum = 0
+
+    for (item in word) if (chars.contains(item)) sum++
+
+    return sum == word.length
+}
 
 /**
  * Средняя
@@ -349,17 +355,6 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 
     return -1 to -1
 }
-/*
-        val delta = number - i
-
-        val firstIndex = list.indexOf(i)
-        val secondIndex = list.indexOf(delta)
-
-        if (secondIndex != -1 && firstIndex != secondIndex)
-            return if (firstIndex < secondIndex) firstIndex to secondIndex
-            else secondIndex to firstIndex
-    }
- */
 
 /**
  * Очень сложная

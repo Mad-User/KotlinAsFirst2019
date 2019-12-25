@@ -157,18 +157,18 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         }
     }
 
-    File(outputName).bufferedWriter().use { bufferedWriter ->                                                           // открыть файл и начать в него записывать
-        for (index in lines.indices) {                                                                                  // главный цикл. проходит по всем строкам. для обработки
-            val line = lines[index]                                                                                     // строка в обработке. для уменьшения кол-ва вызовов
-            val length = line.length                                                                                    // длина строки. для вычасленя лямбды
-            val countSpace = line.count { it == ' ' }                                                                   // подсчет количества пробелов. для нахождения размеров вставок между словами для выравнивания
-            val lambda = maxLength - length + countSpace                                                                // показывает сколько необходимо символов для достижения максимальной длины
+    File(outputName).bufferedWriter().use { bufferedWriter -> // открыть файл и начать в него записывать
+        for (index in lines.indices) { // главный цикл. проходит по всем строкам. для обработки
+            val line = lines[index] // строка в обработке. для уменьшения кол-ва вызовов
+            val length = line.length // длина строки. для вычасленя лямбды
+            val countSpace = line.count { it == ' ' } // подсчет количества пробелов. для нахождения размеров вставок между словами для выравнивания
+            val lambda = maxLength - length + countSpace // показывает сколько необходимо символов для достижения максимальной длины
 
-            if (countSpace != 0) {                                                                                      // исключает возможность деления на 0
-                val bufferLine = if (lambda % countSpace != 0) {                                                        // главная проверка. лямбда / кол-во_пробелов - для выбора пути решения
+            if (countSpace != 0) { // исключает возможность деления на 0
+                val bufferLine = if (lambda % countSpace != 0) { // главная проверка. лямбда / кол-во_пробелов - для выбора пути решения
                     line.replace(" ", " ".repeat((lambda / countSpace)))
                 } else
-                    line.replace(" ", " ".repeat(lambda / countSpace))    // работает!!!                   // если лямбда делится на кол-во_пробелов без остатка - можно за оду операцию заполнить строку
+                    line.replace(" ", " ".repeat(lambda / countSpace)) // если лямбда делится на кол-во_пробелов без остатка - можно за оду операцию заполнить строку
 
                 bufferedWriter.write(bufferLine)
             } else bufferedWriter.write(line)
